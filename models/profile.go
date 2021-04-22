@@ -1,10 +1,13 @@
 package models
 
+import "gopkg.in/mgo.v2/bson"
+
 type Profile struct {
-	Componenttitles []string `json:"componenttitles"`
-	Persondata      [][]struct {
-		ID    int    `json:"id"`
-		Title string `json:"title"`
-		Data  string `json:"data"`
-	} `json:"personData"`
+	ID         bson.ObjectId `bson: "_id" json:"id"`
+	PersonData []struct {
+		ID          bson.ObjectId `bson: "_id" json:"id"`
+		Title       string        `bson: "title" json:"title"`
+		Data        string        `bson: "Data" json:"data"`
+		ComponentID string        `bson: "componentId" json:"componentId"`
+	}
 }

@@ -14,10 +14,10 @@ type ProfileDAO struct {
 	Database string
 }
 
-var db *mgo.Database
+var profile_db *mgo.Database
 
 const (
-	COLLECTION = "profiles"
+	PROFILE_COLLECTION = "profiles"
 )
 
 func (m *ProfileDAO) Connect() {
@@ -25,32 +25,32 @@ func (m *ProfileDAO) Connect() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	db = session.DB(m.Database)
+	profile_db = session.DB(m.Database)
 }
 
-func (m *ProfileDAO) GetAll() ([]Profile, error) {
+func (m *ProfileDAO) GetAllProfiles() ([]Profile, error) {
 	var profiles []Profile
-	err := db.C(COLLECTION).Find(bson.M{}).All(&profiles)
+	err := profile_db.C(PROFILE_COLLECTION).Find(bson.M{}).All(&profiles)
 	return profiles, err
 }
 
-func (m *ProfileDAO) GetByID(id string) (Profile, error) {
+func (m *ProfileDAO) GetProfileByID(id string) (Profile, error) {
 	var profile Profile
-	err := db.C(COLLECTION).FindId(bson.ObjectIdHex(id)).One(&profile)
+	err := profile_db.C(PROFILE_COLLECTION).FindId(bson.ObjectIdHex(id)).One(&profile)
 	return profile, err
 }
 
-func (m *ProfileDAO) Create(profile Profile) error {
-	err := db.C(COLLECTION).Insert(&profile)
+func (m *ProfileDAO) CreateProfile(profile Profile) error {
+	err := profile_db.C(PROFILE_COLLECTION).Insert(&profile)
 	return err
 }
 
-func (m *ProfileDAO) Delete(id string) error {
-	err := db.C(COLLECTION).RemoveId(bson.ObjectIdHex(id))
+func (m *ProfileDAO) DeleteProfile(id string) error {
+	err := profile_db.C(PROFILE_COLLECTION).RemoveId(bson.ObjectIdHex(id))
 	return err
 }
 
-func (m *ProfileDAO) Update(id string, profile Profile) error {
-	err := db.C(COLLECTION).UpdateId(bson.ObjectIdHex(id), &profile)
+func (m *ProfileDAO) UpdateProfile(id string, profile Profile) error {
+	err := profile_db.C(PROFILE_COLLECTION).UpdateId(bson.ObjectIdHex(id), &profile)
 	return err
 }
